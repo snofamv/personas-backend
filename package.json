@@ -1,0 +1,30 @@
+{
+  "dependencies": {
+    "express": "^4.21.2"
+  },
+  "name": "personas-backend",
+  "version": "1.0.0",
+  "main": "dist/index.js",
+  "devDependencies": {
+    "@types/express": "^5.0.0",
+    "@types/node": "^22.10.7",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.7.3"
+  },
+  "scripts": {
+    "dev": "ts-node src/index.ts",
+    "build": "tsc",
+    "start": "node dist/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/snofamv/personas-backend.git"
+  },
+  "author": "fabian niclous",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/snofamv/personas-backend/issues"
+  },
+  "homepage": "https://github.com/snofamv/personas-backend#readme",
+  "description": ""
+}
