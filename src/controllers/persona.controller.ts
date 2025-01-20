@@ -7,7 +7,68 @@ import {
   getPersonasService,
   setPersonaDetalleService,
   setPersonaService,
+  updatePersonaDetalleService,
+  updatePersonaService,
 } from "../services";
+export const patchPersonaDetalleById = async (
+  req: Request,
+  res: Response
+): Promise<any> => {
+  const { idDetalle } = req.params; // ID A BUSCAR
+  const {
+    comuna,
+    direccion,
+    email,
+    estado_cv,
+    provincia,
+    region,
+    telefono,
+  }: DetallesPersona = req.body; // NUEVO DETALLE
+  const nuevoDetalle = {
+    id: idDetalle,
+    comuna,
+    direccion,
+    email,
+    estado_cv,
+    provincia,
+    region,
+    telefono,
+  } as DetallesPersona;
+
+  try {
+    const resultado = await updatePersonaDetalleService(nuevoDetalle);
+    return res.status(200).json({ status: 200, message: resultado }); // Enviar la respuesta sin retorno
+  } catch (error) {
+    console.error("Error fetching personas:", error);
+    return res.status(500).json({ message: "Internal Server Error" });
+  }
+};
+export const patchPersonaById = async (
+  req: Request,
+  res: Response
+): Promise<any> => {
+  const { idPersona } = req.params;
+  const { nombre, amaterno, apaterno, fec_nac, rut, dv, sexo, nacionalidad } =
+    req.body;
+  const personaActualizada: Persona = {
+    id: idPersona,
+    amaterno,
+    apaterno,
+    nombre,
+    fec_nac,
+    rut,
+    dv,
+    sexo,
+    nacionalidad,
+  } as Persona;
+  try {
+    const resultado = await updatePersonaService(personaActualizada); // Llamada única al servicio
+    return res.status(200).json({ status: 200, message: resultado }); // Enviar la respuesta sin retorno
+  } catch (error) {
+    console.error("Error fetching personas:", error);
+    return res.status(500).json({ message: "Internal Server Error" });
+  }
+};
 
 export const getPersonas = async (
   req: Request,
@@ -110,16 +171,20 @@ export const setPersona = async (req: Request, res: Response): Promise<any> => {
   }
 };
 
-// EXAMPLE
+// EXAMPLE PERSONA
 // {
-//   "nombre:": "nombrePrueba",
+//   "nombre": "nombrePrueba",
 //   "apaterno": "apellidoPrueba",
 //   "amaterno": "apellido2Prueba",
 //   "fec_nac": "2024-05-2024",
 //   "rut": "11111111",
 //   "dv": "1",
 //   "sexo": "M",
-//   "nacionalidad": "chileno",
+//   "nacionalidad": "chileno"
+// }
+
+// EXAMPLE DETALLE
+// {
 //   "direccion": "direccion de prueba #332, los alerces.",
 //   "telefono": "1111111111",
 //   "estado_cv": 1,
