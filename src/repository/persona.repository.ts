@@ -12,10 +12,8 @@ const promise = pool.promise();
 export const getPersonasRepository = async () => {
   try {
     const [rows] = await promise.query<PersonaMysql[]>(
-      `SELECT * FROM personas;`,
-      []
+      `SELECT * FROM personas;`
     );
-    console.log("PersonaRepository - GetPersonas()");
     return rows;
   } catch (err) {
     if (err) {
@@ -45,7 +43,6 @@ export const getPersonaByNombreRepository = async (nombre: string) => {
       `SELECT * FROM crudpersonasapp_personasdb1.personas where nombre like ?`,
       [`%${nombre}%`]
     );
-    console.log("PersonaRepository - GetPersonaByNombre()");
     return rows;
   } catch (err) {
     if (err) {
@@ -166,10 +163,11 @@ export const setPersonaRepository = async (persona: Persona) => {
     nombre,
     rut,
     sexo,
+    activo,
   } = persona;
   try {
     const [rows] = await promise.query<PersonaResult>(
-      `INSERT INTO personas VALUES(?,?,?,?,?,?,?,?,?,?);`,
+      `INSERT INTO personas VALUES (?,?,?,?,?,?,?,?,?,?, ?);`,
       [
         id,
         rut,
@@ -181,6 +179,7 @@ export const setPersonaRepository = async (persona: Persona) => {
         sexo,
         nacionalidad,
         id_detalle,
+        activo,
       ]
     );
 
@@ -195,8 +194,6 @@ export const setPersonaRepository = async (persona: Persona) => {
 };
 
 export const deletePersonaRepository = async (userId: string) => {
-  console.log("PersonaRepository - setPersonaRepository()");
-
   try {
     const [rows] = await promise.query<PersonaResult>(
       `UPDATE personas set activo = 0 WHERE personas.id=?;`,

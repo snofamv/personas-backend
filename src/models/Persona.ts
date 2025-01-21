@@ -28,6 +28,7 @@ export interface Persona {
   sexo: string;
   nacionalidad: string;
   id_detalle: string;
+  activo: boolean;
 }
 
 export interface DetallesPersona {

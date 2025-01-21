@@ -19,9 +19,9 @@ personasRoutes.get("/", getPersonas);
 personasRoutes.get("/id/:id", getPersonaById);
 personasRoutes.get("/nombre/:nombre", getPersonaByNombre);
 personasRoutes.delete("/eliminar/:id", deletePersonById);
-personasRoutes.post("/agregar", setPersona);
 personasRoutes.post("/detalle", setPersonaDetalles);
+personasRoutes.post("/agregar/:idDetalle", setPersona);
 personasRoutes.patch("/detalle/:idDetalle", patchPersonaDetalleById);
-personasRoutes.patch("/:idPersona", patchPersonaById);
+personasRoutes.patch("/actualzar/:idPersona", patchPersonaById);
 
 export default personasRoutes;
