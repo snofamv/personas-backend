@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { DetallesPersona, Persona } from "../models";
 import { v4 as uuidv4 } from "uuid";
 import {
+  deletePersonaServite,
   getPersonaByIdService,
   getPersonaByNombreService,
   getPersonasService,
@@ -10,6 +11,15 @@ import {
   updatePersonaDetalleService,
   updatePersonaService,
 } from "../services";
+export const deletePersonById = async (
+  req: Request,
+  res: Response
+): Promise<any> => {
+  const { id } = req.params;
+  const { message, status } = await deletePersonaServite(id);
+
+  return res.status(status).json({ status, message });
+};
 export const patchPersonaDetalleById = async (
   req: Request,
   res: Response

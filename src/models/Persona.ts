@@ -1,4 +1,21 @@
-import { RowDataPacket } from "mysql2";
+import { ResultSetHeader, RowDataPacket } from "mysql2";
+
+export interface PersonaResult extends ResultSetHeader {
+  id: string;
+}
+
+export interface PersonaMysql extends RowDataPacket {
+  id: string;
+  rut: string;
+  dv: string;
+  nombre: string;
+  apaterno: string;
+  amaterno: string;
+  fec_nac: Date;
+  sexo: string;
+  nacionalid: string;
+  id_detalle: string;
+}
 
 export interface Persona {
   id: string;
@@ -34,4 +51,8 @@ export enum Sexo {
   "Femenino" = "F",
   "Masculino" = "M",
   "No Binario" = "N",
+}
+
+export interface PersonaDetallesResults extends ResultSetHeader {
+  id: string;
 }

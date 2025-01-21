@@ -2,10 +2,10 @@ import { pool } from "../config";
 import {
   DetallesPersona,
   Persona,
+  PersonaDetallesResults,
   PersonaMysql,
   PersonaResult,
 } from "../models";
-import { PersonaDetallesResults } from "../models/PersonaDetalles";
 
 const promise = pool.promise();
 
@@ -189,6 +189,23 @@ export const setPersonaRepository = async (persona: Persona) => {
   } catch (err) {
     if (err) {
       console.error("ERROR EN PERSONA REPOSITORY: => ", err);
+      throw err;
+    }
+  }
+};
+
+export const deletePersonaRepository = async (userId: string) => {
+  console.log("PersonaRepository - setPersonaRepository()");
+
+  try {
+    const [rows] = await promise.query<PersonaResult>(
+      `UPDATE personas set activo = 0 WHERE personas.id=?;`,
+      [userId]
+    );
+    return rows;
+  } catch (err) {
+    if (err) {
+      console.error("ERROR EN PERSONA deletePersonaRepository(): => ", err);
       throw err;
     }
   }

@@ -7,6 +7,7 @@ import {
   setPersonaDetalles,
   patchPersonaById,
   patchPersonaDetalleById,
+  deletePersonById,
 } from "../controllers/persona.controller";
 
 const personasRoutes: Router = express.Router();
@@ -17,6 +18,7 @@ const personasRoutes: Router = express.Router();
 personasRoutes.get("/", getPersonas);
 personasRoutes.get("/id/:id", getPersonaById);
 personasRoutes.get("/nombre/:nombre", getPersonaByNombre);
+personasRoutes.delete("/eliminar/:id", deletePersonById);
 personasRoutes.post("/agregar", setPersona);
 personasRoutes.post("/detalle", setPersonaDetalles);
 personasRoutes.patch("/detalle/:idDetalle", patchPersonaDetalleById);
