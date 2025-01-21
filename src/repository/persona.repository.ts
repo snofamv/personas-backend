@@ -1,11 +1,5 @@
 import { pool } from "../config";
-import {
-  DetallesPersona,
-  Persona,
-  PersonaDetallesResults,
-  PersonaMysql,
-  PersonaResult,
-} from "../models";
+import { Persona, PersonaMysql, PersonaResult } from "../models";
 
 const promise = pool.promise();
 
@@ -25,7 +19,7 @@ export const getPersonasRepository = async () => {
 export const getPersonaByIdRepository = async (id: string) => {
   try {
     const [rows] = await promise.query<PersonaMysql[]>(
-      `SELECT * FROM personas where personas.id=?;`,
+      `SELECT id, nombre, apaterno, amaterno, rut, dv, estado_cv, activo, nacionalidad, sexo, DATE_FORMAT(fec_nac, '%Y-%m-%d') AS fec_nac FROM personas where personas.rut=?;`,
       [id]
     );
     console.log("PersonaRepository - GetPersonaById()");
@@ -49,51 +43,6 @@ export const getPersonaByNombreRepository = async (nombre: string) => {
       console.error("ERROR EN PERSONA REPOSITORY: => ", err);
       throw err;
     }
-  }
-};
-export const updatePersonaDetalleRepository = async (
-  detalle: DetallesPersona
-): Promise<string> => {
-  const {
-    comuna,
-    direccion,
-    email,
-    estado_cv,
-    id,
-    provincia,
-    region,
-    telefono,
-  } = detalle;
-
-  // Consulta corregida con las comas
-  const query = `
-    UPDATE detalles_personas 
-    SET 
-      direccion = ?, 
-      telefono = ?, 
-      estado_cv = ?, 
-      region = ?, 
-      comuna = ?, 
-      provincia = ?, 
-      email = ? 
-    WHERE id = ?;
-  `;
-
-  try {
-    const [result] = await promise.query<PersonaDetallesResults>(query, [
-      direccion,
-      telefono,
-      estado_cv,
-      region,
-      comuna,
-      provincia,
-      email,
-      id,
-    ]);
-    return result.affectedRows > 0 ? "Success" : "Failed";
-  } catch (error) {
-    console.error("Error updating detalles_personas:", error);
-    throw error;
   }
 };
 
@@ -123,34 +72,7 @@ export const updatePersonaRepository = async (persona: Persona) => {
     }
   }
 };
-export const setPersonaDetalleRepository = async (
-  detallePersona: DetallesPersona
-) => {
-  const {
-    comuna,
-    direccion,
-    email,
-    estado_cv,
-    id,
-    provincia,
-    region,
-    telefono,
-  } = detallePersona;
-  try {
-    console.log("PersonaRepository - setPersonaDetalleRepository()");
-    const [rows] = await promise.query<PersonaDetallesResults>(
-      `INSERT INTO detalles_personas VALUES(?,?,?,?,?,?,?,?);`,
-      [id, direccion, telefono, estado_cv, region, comuna, provincia, email]
-    );
 
-    return rows.affectedRows > 0 ? { idDetalle: id } : rows;
-  } catch (err) {
-    if (err) {
-      console.error("ERROR EN PERSONA REPOSITORY: => ", err);
-      throw err;
-    }
-  }
-};
 export const setPersonaRepository = async (persona: Persona) => {
   const {
     amaterno,
@@ -158,15 +80,15 @@ export const setPersonaRepository = async (persona: Persona) => {
     dv,
     fec_nac,
     id,
-    id_detalle,
     nacionalidad,
     nombre,
     rut,
     sexo,
     activo,
+    estado_cv,
   } = persona;
   try {
-    const [rows] = await promise.query<PersonaResult>(
+    const [rows] = await promise.query<PersonaResult | any>(
       `INSERT INTO personas VALUES (?,?,?,?,?,?,?,?,?,?, ?);`,
       [
         id,
@@ -178,18 +100,14 @@ export const setPersonaRepository = async (persona: Persona) => {
         fec_nac,
         sexo,
         nacionalidad,
-        id_detalle,
         activo,
+        estado_cv,
       ]
     );
 
-    console.log("PersonaRepository - setPersonaRepository()");
-    return rows;
-  } catch (err) {
-    if (err) {
-      console.error("ERROR EN PERSONA REPOSITORY: => ", err);
-      throw err;
-    }
+    return { status: 500, message: rows };
+  } catch (err: any) {
+    return { status: 500, message: err.code };
   }
 };
 

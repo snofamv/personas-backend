@@ -1,16 +1,15 @@
 import { Request, response, Response } from "express";
-import { DetallesPersona, Persona } from "../models";
+import { Persona } from "../models";
 import { v4 as uuidv4 } from "uuid";
 import {
   deletePersonaServite,
   getPersonaByIdService,
   getPersonaByNombreService,
   getPersonasService,
-  setPersonaDetalleService,
   setPersonaService,
-  updatePersonaDetalleService,
   updatePersonaService,
 } from "../services";
+import { ResponseType } from "../types/ResponseType";
 export const deletePersonById = async (
   req: Request,
   res: Response
@@ -30,44 +29,12 @@ export const deletePersonById = async (
 
   return res.status(200).json({ status: 200, message: "Usuario eliminado" });
 };
-export const patchPersonaDetalleById = async (
-  req: Request,
-  res: Response
-): Promise<any> => {
-  const { idDetalle } = req.params; // ID A BUSCAR
-  const {
-    comuna,
-    direccion,
-    email,
-    estado_cv,
-    provincia,
-    region,
-    telefono,
-  }: DetallesPersona = req.body; // NUEVO DETALLE
-  const nuevoDetalle = {
-    id: idDetalle,
-    comuna,
-    direccion,
-    email,
-    estado_cv,
-    provincia,
-    region,
-    telefono,
-  } as DetallesPersona;
 
-  try {
-    const resultado = await updatePersonaDetalleService(nuevoDetalle);
-    return res.status(200).json({ status: 200, message: resultado }); // Enviar la respuesta sin retorno
-  } catch (error) {
-    console.error("Error fetching personas:", error);
-    return res.status(500).json({ message: "Internal Server Error" });
-  }
-};
 export const patchPersonaById = async (
   req: Request,
   res: Response
 ): Promise<any> => {
-  const { idPersona } = req.params;
+  const { id: idPersona } = req.params;
   const { nombre, amaterno, apaterno, fec_nac, rut, dv, sexo, nacionalidad } =
     req.body;
   const personaActualizada: Persona = {
@@ -111,7 +78,7 @@ export const getPersonaById = async (
 ): Promise<any> => {
   // DESESCTRUCTURAR VALORES
   const { id } = req.params;
-  if (id.trim().length !== 36 || !id) {
+  if (id.trim().length < 7 || !id) {
     return res.status(200).json({ status: 200, message: "ID Invalido" });
   }
   try {
@@ -146,39 +113,23 @@ export const getPersonaByNombre = async (
     return res.status(500).json({ message: "Internal Server Error" });
   }
 };
-export const setPersonaDetalles = async (
-  req: Request,
-  res: Response
-): Promise<any> => {
-  const { direccion, telefono, estado_cv, region, comuna, provincia, email } =
-    req.body;
-  const detallePersona: DetallesPersona = {
-    id: uuidv4(),
-    direccion,
-    email,
-    telefono,
-    provincia,
-    region,
-    comuna,
-    estado_cv,
-  };
 
-  try {
-    const resultado = await setPersonaDetalleService(detallePersona);
-    return res.status(200).json({ status: 200, message: resultado });
-  } catch (error) {
-    console.error("Error al agregar personas:", error);
-    return res.status(500).json({ message: "Internal Server Error" });
-  }
-};
 export const setPersona = async (req: Request, res: Response): Promise<any> => {
   const { idDetalle } = req.params;
   // DESESCTRUCTURAR VALORES
-  const { nombre, amaterno, apaterno, fec_nac, rut, dv, sexo, nacionalidad } =
-    req.body;
+  const {
+    nombre,
+    amaterno,
+    apaterno,
+    fec_nac,
+    rut,
+    dv,
+    sexo,
+    nacionalidad,
+    estado_cv,
+  } = req.body;
   const persona: Persona = {
     id: uuidv4(),
-    id_detalle: idDetalle,
     amaterno,
     apaterno,
     dv,
@@ -188,35 +139,15 @@ export const setPersona = async (req: Request, res: Response): Promise<any> => {
     nacionalidad,
     nombre,
     activo: false,
+    estado_cv,
   };
-  try {
-    const resultado = await setPersonaService(persona);
-    return res.status(200).json({ status: 200, message: resultado });
-  } catch (error) {
-    console.error(error);
-    return res.status(500).json({ message: "Internal Server Error" });
+
+  const resultado: ResponseType = await setPersonaService(persona);
+  if (resultado.message === "ER_DUP_ENTRY") {
+    return res.status(409).json("Rut ingresado ya existe.");
   }
+
+  return res
+    .status(200)
+    .json({ status: 200, message: "Persona agregada correctamente" });
 };
-
-// EXAMPLE PERSONA
-// {
-//   "nombre": "nombrePrueba",
-//   "apaterno": "apellidoPrueba",
-//   "amaterno": "apellido2Prueba",
-//   "fec_nac": "2024-05-2024",
-//   "rut": "11111111",
-//   "dv": "1",
-//   "sexo": "M",
-//   "nacionalidad": "chileno"
-// }
-
-// EXAMPLE DETALLE
-// {
-//   "direccion": "direccion de prueba #332, los alerces.",
-//   "telefono": "1111111111",
-//   "estado_cv": 1,
-//   "region": 5,
-//   "comuna": 2,
-//   "provincia": 1,
-//   "email": "testEmail@gmail.com"
-// }

@@ -24,21 +24,10 @@ export interface Persona {
   nombre: string;
   apaterno: string;
   amaterno: string;
-  fec_nac: string;
+  fec_nac: Date;
   sexo: string;
   nacionalidad: string;
-  id_detalle: string;
   activo: boolean;
-}
-
-export interface DetallesPersona {
-  id: string;
-  direccion: string;
-  telefono: string;
-  region: number;
-  comuna: number;
-  provincia: number;
-  email: string;
   estado_cv: number;
 }
 
@@ -52,8 +41,4 @@ export enum Sexo {
   "Femenino" = "F",
   "Masculino" = "M",
   "No Binario" = "N",
-}
-
-export interface PersonaDetallesResults extends ResultSetHeader {
-  id: string;
 }

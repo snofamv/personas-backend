@@ -1,12 +1,10 @@
-import { DetallesPersona, Persona, PersonaMysql } from "../models";
+import { Persona } from "../models";
 import {
   deletePersonaRepository,
   getPersonaByIdRepository,
   getPersonaByNombreRepository,
   getPersonasRepository,
-  setPersonaDetalleRepository,
   setPersonaRepository,
-  updatePersonaDetalleRepository,
   updatePersonaRepository,
 } from "../repository";
 export const getPersonasService = async () => {
@@ -21,17 +19,8 @@ export const getPersonaByNombreService = async (nombre: string) => {
 export const setPersonaService = async (persona: Persona) => {
   return await setPersonaRepository(persona);
 };
-
-export const setPersonaDetalleService = async (
-  detallePersona: DetallesPersona
-) => {
-  return await setPersonaDetalleRepository(detallePersona);
-};
 export const updatePersonaService = async (persona: Persona) => {
   return await updatePersonaRepository(persona);
-};
-export const updatePersonaDetalleService = async (detalle: DetallesPersona) => {
-  return await updatePersonaDetalleRepository(detalle);
 };
 export const deletePersonaServite = async (userId: string) => {
   return await deletePersonaRepository(userId);

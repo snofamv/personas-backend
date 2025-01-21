@@ -4,9 +4,7 @@ import {
   getPersonaById,
   getPersonaByNombre,
   setPersona,
-  setPersonaDetalles,
   patchPersonaById,
-  patchPersonaDetalleById,
   deletePersonById,
 } from "../controllers/persona.controller";
 
@@ -19,9 +17,7 @@ personasRoutes.get("/", getPersonas);
 personasRoutes.get("/id/:id", getPersonaById);
 personasRoutes.get("/nombre/:nombre", getPersonaByNombre);
 personasRoutes.delete("/eliminar/:id", deletePersonById);
-personasRoutes.post("/detalle", setPersonaDetalles);
-personasRoutes.post("/agregar/:idDetalle", setPersona);
-personasRoutes.patch("/detalle/:idDetalle", patchPersonaDetalleById);
-personasRoutes.patch("/actualzar/:idPersona", patchPersonaById);
+personasRoutes.post("/agregar", setPersona);
+personasRoutes.patch("/actualizar/:id", patchPersonaById);
 
 export default personasRoutes;
