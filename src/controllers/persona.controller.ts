@@ -35,8 +35,18 @@ export const patchPersonaById = async (
   res: Response
 ): Promise<any> => {
   const { id: idPersona } = req.params;
-  const { nombre, amaterno, apaterno, fec_nac, rut, dv, sexo, nacionalidad } =
-    req.body;
+  const {
+    nombre,
+    amaterno,
+    apaterno,
+    fec_nac,
+    rut,
+    dv,
+    sexo,
+    nacionalidad,
+    activo,
+    estado_cv,
+  } = req.body;
   const personaActualizada: Persona = {
     id: idPersona,
     amaterno,
@@ -47,6 +57,8 @@ export const patchPersonaById = async (
     dv,
     sexo,
     nacionalidad,
+    activo,
+    estado_cv,
   } as Persona;
   try {
     const resultado = await updatePersonaService(personaActualizada); // Llamada única al servicio
@@ -138,7 +150,7 @@ export const setPersona = async (req: Request, res: Response): Promise<any> => {
     fec_nac,
     nacionalidad,
     nombre,
-    activo: false,
+    activo: 0,
     estado_cv,
   };
 
