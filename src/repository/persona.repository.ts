@@ -128,7 +128,7 @@ export const setPersonaRepository = async (persona: Persona) => {
 export const deletePersonaRepository = async (userId: string) => {
   try {
     const [rows] = await promise.query<PersonaResult>(
-      `UPDATE personas set activo = 0 WHERE personas.id=?;`,
+      `DELETE personas where id=?;`,
       [userId]
     );
     return rows;
