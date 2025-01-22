@@ -9,19 +9,22 @@ export const validatePersonEntity = (
 ): any => {
   const requestBody = req.body;
   const ajv = new Ajv();
+  console.log(requestBody);
+
+  // Esquema ajustado
   const schema: JSONSchemaType<Persona> = {
     type: "object",
     properties: {
-      id: { type: "string", minLength: 1 },
+      id: { type: "string", minLength: 0, maxLength: 36, nullable: true }, // Ajuste para que sea opcional
       rut: { type: "string", minLength: 7, maxLength: 8 },
       dv: { type: "string", minLength: 1, maxLength: 1 },
       nombre: { type: "string", minLength: 3, maxLength: 32 },
       apaterno: { type: "string", minLength: 3, maxLength: 32 },
       amaterno: { type: "string", minLength: 3, maxLength: 32 },
       fec_nac: { type: "string", minLength: 10, maxLength: 10 },
-      sexo: { type: "string", enum: ["M", "F", "NB", "D"] },
+      sexo: { type: "string", enum: ["M", "F", "N", "D"] },
       nacionalidad: { type: "string", minLength: 2, maxLength: 32 },
-      activo: { type: "boolean" },
+      activo: { type: "number" },
       estado_cv: { type: "number", enum: [1, 2, 3, 4] },
     },
     required: [
@@ -34,7 +37,7 @@ export const validatePersonEntity = (
       "sexo",
       "nacionalidad",
       "estado_cv",
-    ],
+    ], // No incluimos "id" en la lista de required
     additionalProperties: false,
   };
 
