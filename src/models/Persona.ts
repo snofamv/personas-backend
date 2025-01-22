@@ -18,7 +18,7 @@ export interface PersonaMysql extends RowDataPacket {
 }
 
 export interface Persona {
-  id: string;
+  id?: string;
   rut: string;
   dv: string;
   nombre: string;
@@ -27,7 +27,7 @@ export interface Persona {
   fec_nac: string;
   sexo: string;
   nacionalidad: string;
-  activo: boolean;
+  activo: number;
   estado_cv: number;
 }
 
