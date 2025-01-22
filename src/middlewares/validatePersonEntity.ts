@@ -9,7 +9,6 @@ export const validatePersonEntity = (
 ): any => {
   const requestBody = req.body;
   const ajv = new Ajv();
-  console.log(requestBody);
 
   // Esquema ajustado
   const schema: JSONSchemaType<Persona> = {

@@ -9,27 +9,27 @@ import {
   setPersonaService,
   updatePersonaService,
 } from "../services";
-import { ResponseType } from "../types/ResponseType";
 export const deletePersonById = async (
   req: Request,
   res: Response
 ): Promise<any> => {
   const { id } = req.params;
+  if (id.toString().trim().length !== 36) {
+    res.statusCode = 400;
+    return res.json({ status: false, message: "Parametro ID Invalido" });
+  }
+
   const resultado = await deletePersonaServite(id);
-  if (id.toString().trim().length !== 36)
-    return res.status(200).json({ status: 200, message: "ID Invalido" });
 
-  if (resultado?.affectedRows === 0)
-    return res.status(200).json({ status: 200, message: "No existe ID" });
-
-  if (resultado?.changedRows === 0)
-    return res
-      .status(200)
-      .json({ status: 200, message: "Usuario ya se encuentra eliminado." });
-
-  return res.status(200).json({ status: 200, message: "Usuario eliminado" });
+  if (!resultado?.status) {
+    res.statusCode = 400;
+    return res.json({ status: false, message: "No existe ID" });
+  }
+  res.statusCode = 200;
+  return res.json({ status: true, message: "Usuario eliminado" });
 };
 
+// response fixed
 export const patchPersonaById = async (
   req: Request,
   res: Response
@@ -62,12 +62,26 @@ export const patchPersonaById = async (
   } as Persona;
   try {
     const resultado = await updatePersonaService(personaActualizada); // Llamada única al servicio
-    return res.status(200).json({ status: 200, message: resultado }); // Enviar la respuesta sin retorno
+    if (!resultado?.success) {
+      res.statusCode = 400;
+      return res.json({
+        status: true,
+        message: resultado?.message,
+      });
+    }
+    res.statusCode = 200;
+    return res.json({
+      status: true,
+      message: "Persona eliminada correctamente.",
+    });
   } catch (error) {
+    res.statusCode = 500;
     console.error("Error fetching personas:", error);
-    return res.status(500).json({ message: "Internal Server Error" });
+    return res.json({ message: "Internal Server Error" });
   }
 };
+
+// Response Fixed
 
 export const getPersonas = async (
   req: Request,
@@ -75,57 +89,66 @@ export const getPersonas = async (
 ): Promise<any> => {
   try {
     const resultado = await getPersonasService();
-    if (resultado?.length === 0)
-      return res.status(200).json({ status: 200, message: [] });
-    return res.status(200).json({ status: 200, message: resultado });
+    if (resultado?.length === 0) {
+      res.statusCode = 200; //No content found
+      return res.json({ status: false, message: [] });
+    }
+    res.statusCode = 200;
+    return res.json({ status: true, message: resultado });
   } catch (error) {
     console.error("Error fetching personas:", error);
-    return res.status(500).json({ message: "Internal Server Error" });
+    res.statusCode = 500;
+    return res.json({ status: false, message: "Internal Server Error" });
   }
 };
+// Response Fixed
 
 export const getPersonaById = async (
   req: Request,
   res: Response
 ): Promise<any> => {
-  // DESESCTRUCTURAR VALORES
   const { id } = req.params;
   if (id.trim().length < 7 || !id) {
-    return res.status(200).json({ status: 200, message: "ID Invalido" });
+    res.statusCode = 400; //Bad request
+    return res.json({ status: false, message: "ID Invalido" });
   }
   try {
     const resultado = await getPersonaByIdService(id);
-    return res.status(200).json({ status: 200, message: resultado });
+    res.statusCode = 200;
+    return res.json({ status: true, message: resultado });
   } catch (error) {
     console.error("Error fetching persona por ID:", error);
-    return res.status(500).json({ message: "Internal Server Error" });
+    res.statusCode = 500;
+    return res.json({ status: false, message: "Internal Server Error" });
   }
 };
+// Response Fixed
 
 export const getPersonaByNombre = async (
   req: Request,
   res: Response
 ): Promise<any> => {
-  // DESESCTRUCTURAR VALORES
   const { nombre } = req.params;
   if (nombre.trim().length < 1 || !nombre.trim()) {
-    return res
-      .status(200)
-      .json({ status: 200, message: "Parametro 'Nombre' Incorrecto." });
+    res.statusCode = 400; //Bad request
+    return res.json({ message: "Parametro 'Nombre' Incorrecto." });
   }
   try {
     const resultado = await getPersonaByNombreService(nombre);
-    if (resultado?.length === 0)
-      return res
-        .status(200)
-        .json({ status: 200, message: "No existen resultados" });
-    return res.status(200).json({ status: 200, message: resultado });
+    if (resultado?.length === 0) {
+      res.statusCode = 404; // Not found
+      return res.json({ status: false, message: "No existen resultados" });
+    }
+    res.statusCode = 200;
+    return res.json({ status: true, message: resultado });
   } catch (error) {
     console.error("Error fetching persona por nombre:", error);
-    return res.status(500).json({ message: "Internal Server Error" });
+    res.statusCode = 500;
+    return res.json({ status: false, message: "Internal Server Error" });
   }
 };
 
+// Response Fixed
 export const setPersona = async (req: Request, res: Response): Promise<any> => {
   const { idDetalle } = req.params;
   // DESESCTRUCTURAR VALORES
@@ -154,12 +177,11 @@ export const setPersona = async (req: Request, res: Response): Promise<any> => {
     estado_cv,
   };
 
-  const resultado: ResponseType = await setPersonaService(persona);
-  if (resultado.message === "ER_DUP_ENTRY") {
-    return res.status(409).json("Rut ingresado ya existe.");
+  const resultado = await setPersonaService(persona);
+  if (!resultado.success) {
+    res.statusCode = 409;
+    return res.json({ status: false, message: "Error al ingresar el rut." });
   }
-
-  return res
-    .status(200)
-    .json({ status: 200, message: "Persona agregada correctamente" });
+  res.statusCode = 200;
+  return res.json({ status: true, message: "Persona agregada correctamente" });
 };
