@@ -7,6 +7,12 @@ import {
   patchPersonaById,
   deletePersonById,
 } from "../controllers/persona.controller";
+import {
+  validateId,
+  validatePersonId,
+  validateName,
+  validatePersonEntity,
+} from "../middlewares";
 
 const personasRoutes: Router = express.Router();
 
@@ -14,10 +20,10 @@ const personasRoutes: Router = express.Router();
 
 // Usa la referencia al método sin ejecutarlo
 personasRoutes.get("/", getPersonas);
-personasRoutes.get("/id/:id", getPersonaById);
-personasRoutes.get("/nombre/:nombre", getPersonaByNombre);
-personasRoutes.delete("/eliminar/:id", deletePersonById);
-personasRoutes.post("/agregar", setPersona);
-personasRoutes.patch("/actualizar/:id", patchPersonaById);
+personasRoutes.get("/id/:id", validateId, getPersonaById);
+personasRoutes.get("/nombre/:nombre", validateName, getPersonaByNombre);
+personasRoutes.delete("/eliminar/:id", validatePersonId, deletePersonById);
+personasRoutes.post("/agregar", validatePersonEntity, setPersona);
+personasRoutes.patch("/actualizar/:id", validatePersonId, patchPersonaById);
 
 export default personasRoutes;

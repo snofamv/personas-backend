@@ -24,7 +24,7 @@ export interface Persona {
   nombre: string;
   apaterno: string;
   amaterno: string;
-  fec_nac: Date;
+  fec_nac: string;
   sexo: string;
   nacionalidad: string;
   activo: boolean;
