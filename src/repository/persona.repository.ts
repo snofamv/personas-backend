@@ -6,7 +6,7 @@ const promise = pool.promise();
 export const getPersonasRepository = async () => {
   try {
     const [rows] = await promise.query<PersonaMysql[]>(
-      `SELECT * FROM personas;`
+      `SELECT * FROM personas where activo=1;`
     );
     return rows;
   } catch (err) {
@@ -19,7 +19,7 @@ export const getPersonasRepository = async () => {
 export const getPersonaByIdRepository = async (id: string) => {
   try {
     const [rows] = await promise.query<PersonaMysql[]>(
-      `SELECT id, nombre, apaterno, amaterno, rut, dv, estado_cv, activo, nacionalidad, sexo, DATE_FORMAT(fec_nac, '%Y-%m-%d') AS fec_nac FROM personas where personas.rut=?;`,
+      `SELECT id, nombre, apaterno, amaterno, rut, dv, estado_cv, activo, nacionalidad, sexo, DATE_FORMAT(fec_nac, '%Y-%m-%d') AS fec_nac FROM personas where personas.rut=? and activo=1;`,
       [id]
     );
     console.log("PersonaRepository - GetPersonaById()");

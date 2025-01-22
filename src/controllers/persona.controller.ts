@@ -150,7 +150,7 @@ export const setPersona = async (req: Request, res: Response): Promise<any> => {
     fec_nac,
     nacionalidad,
     nombre,
-    activo: 0,
+    activo: 1,
     estado_cv,
   };
 
