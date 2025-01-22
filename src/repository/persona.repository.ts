@@ -57,13 +57,27 @@ export const updatePersonaRepository = async (persona: Persona) => {
     nombre,
     rut,
     sexo,
+    activo,
+    estado_cv,
   } = persona;
+  console.log(persona);
   try {
     const [rows] = await promise.query<PersonaResult>(
-      `UPDATE personas set rut = ?, dv = ?, nombre = ?, apaterno = ?, amaterno = ?, fec_nac = ?, sexo = ?, nacionalidad = ? where id=?;`,
-      [rut, dv, nombre, apaterno, amaterno, fec_nac, sexo, nacionalidad, id]
+      `UPDATE personas set rut = ?, dv = ?, nombre = ?, apaterno = ?, amaterno = ?, fec_nac = ?, sexo = ?, nacionalidad = ?, activo = ?, estado_cv = ? where id = ?;`,
+      [
+        rut,
+        dv,
+        nombre,
+        apaterno,
+        amaterno,
+        fec_nac,
+        sexo,
+        nacionalidad,
+        activo,
+        estado_cv,
+        id,
+      ]
     );
-    console.log("PersonaRepository - GetPersonaByNombre()");
     return rows.affectedRows > 0 ? "Success" : "Failed";
   } catch (err) {
     if (err) {
@@ -100,7 +114,7 @@ export const setPersonaRepository = async (persona: Persona) => {
         fec_nac,
         sexo,
         nacionalidad,
-        activo,
+        activo === 0 ? false : true,
         estado_cv,
       ]
     );
