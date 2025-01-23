@@ -48,3 +48,36 @@ Sigue estos pasos para configurar el proyecto:
    ```bash
    npm run dev
    ```
+
+
+## #####################          ENDPOINTS 🖱         #######################
+1. **OBTENER A TODAS LAS PERSONAS**:
+   ```bash
+   http://localhost:5001/api/personas
+   ```
+2. **OBTENER POR ID**:
+
+   -**:id** = el id debe ser los 8 primeros digitos del rut ej: 11222333-8 el id es 11222333
+   ```bash
+   http://localhost:5001/api/personas/id/:id
+   ```
+3. **OBTENER POR ID**:
+
+   -**:id** = el id debe ser un ID string de 36 caracteres (id de el registro persona)
+   ```bash
+   http://localhost:5001/api/personas/eliminar/:id
+   ```
+4. **OBTENER POR ID**:
+
+   -**:BODY DE LA SOLICITUD** = el body de la peticion debe ser un objeto de tipo Person.
+    -**:METODO** = POST
+   ```bash
+   http://localhost:5001/api/personas/agregar
+   ```
+4. **OBTENER POR ID**:
+   -**:id** = el id debe ser un ID string de 36 caracteres (id de el registro persona)
+   -**:BODY DE LA SOLICITUD** = el body de la peticion debe ser un objeto de tipo Person con los nuevos datos.
+    -**:METODO** = PATCH
+   ```bash
+   http://localhost:5001/api/personas/actualizar/:id
+   ```
