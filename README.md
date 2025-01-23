@@ -28,7 +28,7 @@ Sigue estos pasos para configurar el proyecto:
    Si aún no has clonado el proyecto, puedes hacerlo con el siguiente comando:
 
    ```bash
-   git clone https://github.com/tu-usuario/tu-repositorio.git
+   git clone https://github.com/snofamv/personas-back.git
    cd tu-repositorio
    ```
 
@@ -50,7 +50,7 @@ Sigue estos pasos para configurar el proyecto:
    ```
 
 
-## #####################          ENDPOINTS 🖱         #######################
+## ########        ENDPOINTS 🖱  
 1. **OBTENER A TODAS LAS PERSONAS**:
    ```bash
    http://localhost:5001/api/personas
@@ -61,20 +61,20 @@ Sigue estos pasos para configurar el proyecto:
    ```bash
    http://localhost:5001/api/personas/id/:id
    ```
-3. **OBTENER POR ID**:
+3. **ELIMINAR POR ID**:
 
    -**:id** = el id debe ser un ID string de 36 caracteres (id de el registro persona)
    ```bash
    http://localhost:5001/api/personas/eliminar/:id
    ```
-4. **OBTENER POR ID**:
+4. **AGREGAR PERSONA**:
 
    -**:BODY DE LA SOLICITUD** = el body de la peticion debe ser un objeto de tipo Person.
     -**:METODO** = POST
    ```bash
    http://localhost:5001/api/personas/agregar
    ```
-4. **OBTENER POR ID**:
+4. **ACTUALIZAR POR ID**:
    -**:id** = el id debe ser un ID string de 36 caracteres (id de el registro persona)
    -**:BODY DE LA SOLICITUD** = el body de la peticion debe ser un objeto de tipo Person con los nuevos datos.
     -**:METODO** = PATCH
