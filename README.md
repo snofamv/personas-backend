@@ -1,16 +1,6 @@
 # CRUD Personas Backend - Express + TypeScript
 
-![Node.js](https://img.shields.io/badge/Node.js-8CC84B?style=flat&logo=node.js&logoColor=ffffff) ![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=flat&logo=typescript&logoColor=ffffff) ![Express](https://img.shields.io/badge/Express-000000?style=flat&logo=express&logoColor=ffffff)
-
-## Descripción 📖
-
 Este proyecto implementa un **CRUD de personas** utilizando un backend basado en **Express** y **TypeScript**. El propósito de esta aplicación es gestionar datos de personas (como nombre, dirección, teléfono, etc.) y sus detalles asociados.
-
-- **Tecnologías utilizadas**:
-  - **Node.js**
-  - **Express**
-  - **TypeScript**
-  - **MySQL** o **Base de datos Relacional** (si aplica)
 
 ## Requisitos previos ⚙️
 
@@ -18,6 +8,16 @@ Antes de comenzar, asegúrate de tener instalados los siguientes programas:
 
 - [Node.js](https://nodejs.org) (LTS)
 - [MySQL](https://www.mysql.com)
+- archivo .env
+    ```
+        DB_PORT=9999
+        DB_HOST=localhost
+        DB_USER=root
+        DB_PASSWORD=root
+        DB_NAME=mi_bd
+        PORT=5000
+        NODE_ENVIRONMENT=production
+    ```
 
 ## Instalación 💻💻
 
