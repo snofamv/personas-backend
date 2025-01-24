@@ -1,83 +1,157 @@
 # CRUD Personas Backend - Express + TypeScript
 
-Este proyecto implementa un **CRUD de personas** utilizando un backend basado en **Express** y **TypeScript**. El propósito de esta aplicación es gestionar datos de personas (como nombre, dirección, teléfono, etc.) y sus detalles asociados.
+Este proyecto implementa un **CRUD de personas** utilizando un backend basado en **Express** y **TypeScript**. Su objetivo es gestionar datos de personas, incluyendo detalles como nombre, dirección, teléfono, entre otros.
+
+---
 
 ## Requisitos previos ⚙️
 
 Antes de comenzar, asegúrate de tener instalados los siguientes programas:
 
-- [Node.js](https://nodejs.org) (LTS)
-- [MySQL](https://www.mysql.com)
-- archivo .env
-    ```
-        DB_PORT=9999
-        DB_HOST=localhost
-        DB_USER=root
-        DB_PASSWORD=root
-        DB_NAME=mi_bd
-        PORT=5000
-        NODE_ENVIRONMENT=production
-    ```
+- [Node.js](https://nodejs.org) (versión LTS recomendada).
+- [MySQL](https://www.mysql.com).
 
-## Instalación 💻💻
+Además, debes configurar un archivo `.env` en la raíz del proyecto con el siguiente contenido:
 
-Sigue estos pasos para configurar el proyecto:
+```
+DB_PORT=9999
+DB_HOST=localhost
+DB_USER=root
+DB_PASSWORD=root
+DB_NAME=mi_bd
+PORT=5000
+NODE_ENVIRONMENT=production
+```
 
-1. **Clonar el repositorio**:
+---
 
-   Si aún no has clonado el proyecto, puedes hacerlo con el siguiente comando:
+## Instalación 💻
 
-   ```bash
-   git clone https://github.com/snofamv/personas-back.git
-   cd tu-repositorio
-   ```
+Sigue estos pasos para configurar y ejecutar el proyecto:
 
-2. **Instalar depdendencias del proyecto**:
+### 1. Clonar el repositorio
 
-  Una vez clonado el repositorio es necesario instalar las dependencias antes de correr el servidor:
+Si aún no has clonado el proyecto, puedes hacerlo ejecutando:
 
-   ```bash
-    npm install
-   ```
+```bash
+git clone https://github.com/snofamv/personas-back.git
+cd personas-back
+```
 
-## Ejecutar servidor 🚀
-1. **Ejecutar el servidor**:
+### 2. Instalar dependencias
 
-     Una vez instaladas las dependencias correctamente ejecutar el comando para iniciar el servidor express:
+Una vez dentro del directorio del proyecto, instala las dependencias necesarias:
 
-   ```bash
-   npm run dev
-   ```
+```bash
+npm install
+```
 
+---
 
-## ########        ENDPOINTS 🖱  
-1. **OBTENER A TODAS LAS PERSONAS**:
-   ```bash
-   http://localhost:5001/api/personas
-   ```
-2. **OBTENER POR ID**:
+## Ejecución del servidor 🚀
 
-   -**:id** = el id debe ser los 8 primeros digitos del rut ej: 11222333-8 el id es 11222333
-   ```bash
-   http://localhost:5001/api/personas/id/:id
-   ```
-3. **ELIMINAR POR ID**:
+Para iniciar el servidor, sigue estos pasos:
 
-   -**:id** = el id debe ser un ID string de 36 caracteres (id de el registro persona)
-   ```bash
-   http://localhost:5001/api/personas/eliminar/:id
-   ```
-4. **AGREGAR PERSONA**:
+1. Ejecuta el siguiente comando:
 
-   -**:BODY DE LA SOLICITUD** = el body de la peticion debe ser un objeto de tipo Person.
-    -**:METODO** = POST
-   ```bash
-   http://localhost:5001/api/personas/agregar
-   ```
-4. **ACTUALIZAR POR ID**:
-   -**:id** = el id debe ser un ID string de 36 caracteres (id de el registro persona)
-   -**:BODY DE LA SOLICITUD** = el body de la peticion debe ser un objeto de tipo Person con los nuevos datos.
-    -**:METODO** = PATCH
-   ```bash
-   http://localhost:5001/api/personas/actualizar/:id
-   ```
+```bash
+npm run dev
+```
+
+Esto iniciará el servidor en el puerto configurado (por defecto, 5000).
+
+---
+
+## Endpoints 🛠️
+
+A continuación, se detallan los endpoints disponibles en la API:
+
+### 1. Obtener todas las personas
+
+**Descripción:** Devuelve una lista de todas las personas registradas.
+
+**URL:**
+```bash
+GET http://localhost:5000/api/personas
+```
+
+---
+
+### 2. Obtener una persona por ID
+
+**Descripción:** Devuelve los datos de una persona según su ID.
+
+**URL:**
+```bash
+GET http://localhost:5000/api/personas/id/:id
+```
+
+**Nota:**
+- **`:id`** debe ser el valor numérico correspondiente a los primeros 8 dígitos del RUT (por ejemplo, para 11222333-8, el ID es 11222333).
+
+---
+
+### 3. Eliminar una persona por ID
+
+**Descripción:** Elimina una persona del registro según su ID.
+
+**URL:**
+```bash
+DELETE http://localhost:5000/api/personas/eliminar/:id
+```
+
+**Nota:**
+- **`:id`** debe ser un string de 36 caracteres (ID del registro).
+
+---
+
+### 4. Agregar una nueva persona
+
+**Descripción:** Registra una nueva persona en el sistema.
+
+**URL:**
+```bash
+POST http://localhost:5000/api/personas/agregar
+```
+
+**Body de la solicitud:**
+Debe ser un objeto JSON con el siguiente formato:
+```json
+{
+  "rut": "string",
+  "dv": "string",
+  "nombre": "string",
+  "apaterno": "string",
+  "amaterno": "string",
+  "fec_nac": "YYYY-MM-DD",
+  "sexo": "string",
+  "nacionalidad": "string",
+  "activo": true,
+  "estado_cv": 0
+}
+```
+
+---
+
+### 5. Actualizar una persona por ID
+
+**Descripción:** Actualiza los datos de una persona según su ID.
+
+**URL:**
+```bash
+PATCH http://localhost:5000/api/personas/actualizar/:id
+```
+
+**Notas:**
+- **`:id`** debe ser un string de 36 caracteres (ID del registro).
+- **Body de la solicitud:** Debe ser un objeto JSON con los nuevos datos a actualizar, siguiendo el formato del endpoint "Agregar una nueva persona".
+
+---
+
+## Contacto
+
+Si tienes preguntas o problemas relacionados con este proyecto, no dudes en contactarme.
+
+**Autor:** snofamv  
+**Repositorio:** [GitHub - personas-back](https://github.com/snofamv/personas-back)
+
